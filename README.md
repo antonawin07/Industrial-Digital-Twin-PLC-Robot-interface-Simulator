@@ -44,7 +44,7 @@ curl http://localhost:8001/areas
 curl http://localhost:8001/alarms
 ```
 
-## 📊 Process Areas & Tags
+Process Areas & Tags
 
 | Area | Prefix | Tag Count | Description |
 |------|--------|-----------|-------------|
