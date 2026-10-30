@@ -1,8 +1,8 @@
-# Industrial PLC Simulator
+ Industrial PLC Simulator
 
 A professional-grade HTTP-based PLC simulator with **295+ realistic industrial tags** for testing industrial automation applications, SCADA systems, and PLC monitoring tools.
 
-## 🚀 Features
+ Features
 
 - **HTTP REST API** for easy integration
 - **295+ Realistic Industrial Tags** across 12 process areas
@@ -13,7 +13,7 @@ A professional-grade HTTP-based PLC simulator with **295+ realistic industrial t
 - **Zero Dependencies** - uses only Python standard library
 - **CORS Support** for web applications
 
-## ⚡ Quick Start
+ Quick Start
 
 ### Installation
 
@@ -25,7 +25,7 @@ python industrial_plc_simulator.py
 
 The server will start on `http://localhost:8001`
 
-### Basic Usage
+Basic Usage
 
 ```bash
 # Start the simulator
@@ -63,9 +63,9 @@ curl http://localhost:8001/alarms
 
 **Total: 295+ Industrial Tags**
 
-## 🔌 API Endpoints
+ API Endpoints
 
-### GET /tags
+ GET /tags
 Returns all available PLC tags with their data types and current values.
 
 **Response:**
@@ -88,7 +88,7 @@ Returns all available PLC tags with their data types and current values.
 }
 ```
 
-### GET /read?tags=TAG1,TAG2,TAG3
+ GET /read?tags=TAG1,TAG2,TAG3
 Read current values for specified tags.
 
 **Example:**
@@ -111,13 +111,13 @@ curl "http://localhost:8001/read?tags=R0101_TIC_2101_PV,P0201_M_SPEED_ACTUAL,CV0
 }
 ```
 
-### GET /areas
+ GET /areas
 Returns tags organized by plant areas.
 
-### GET /alarms
+ GET /alarms
 Returns current alarm status and alarm summary.
 
-### POST /write
+POST /write
 Write tag values (JSON body):
 ```json
 {
@@ -125,8 +125,7 @@ Write tag values (JSON body):
   "CV0301_POSITION_CMD": 60.0
 }
 ```
-
-## 🏗️ Industrial Process Simulation
+ Industrial Process Simulation
 
 ### Advanced Features
 - **Dynamic Tag Values**: Real-time simulation with process dynamics
@@ -136,16 +135,16 @@ Write tag values (JSON body):
 - **Equipment Health**: Vibration and temperature monitoring
 - **Process Interactions**: Tags that influence each other realistically
 
-### Equipment Coverage
+ Equipment Coverage
 
-#### Reactor Systems (Area 100)
+ Reactor Systems (Area 100)
 - Primary Reactor R-101 with full instrumentation
 - Temperature, Pressure, Level, Flow control loops
 - Agitator systems with VFD control
 - pH and Conductivity monitoring
 - Safety systems (PSV, Rupture Discs, E-Stop)
 
-#### Pump Systems (Area 200)
+ Pump Systems (Area 200)
 - Centrifugal Feed Pump P-201 with full diagnostics
 - Motor parameters (Current, Voltage, Power, Torque)
 - VFD status and fault codes
@@ -153,29 +152,29 @@ Write tag values (JSON body):
 - Bearing temperature monitoring
 - Cavitation detection
 
-#### Valve Systems (Area 300)
+ Valve Systems (Area 300)
 - Control Valves with position feedback
 - Emergency Shutdown Valves (ESD)
 - Motor Operated Valves (MOV)
 - Pneumatic actuator pressure
 - Travel limit switches
 
-#### Safety Systems (Area 800)
+ Safety Systems (Area 800)
 - Safety Instrumented System (SIS)
 - Gas Detection (H2S, LEL, O2, CO)
 - Fire Detection and Suppression
 - Emergency trip systems
 
-#### Production Systems (Area 900)
+ Production Systems (Area 900)
 - Batch control with ISA-88 states
 - Recipe management with versions
 - Production rates and totals
 - Quality control parameters
 - Overall Equipment Effectiveness (OEE)
 
-## 🔧 Integration Examples
+ Integration Examples
 
-### Python Integration
+Python Integration
 ```python
 import requests
 
@@ -189,7 +188,7 @@ values = response.json()['values']
 print(f"Reactor Temperature: {values['R0101_TIC_2101_PV']['value']}°C")
 ```
 
-### JavaScript/Web Integration
+ JavaScript/Web Integration
 ```javascript
 // Fetch all tags
 fetch('http://localhost:8001/tags')
@@ -202,7 +201,7 @@ fetch('http://localhost:8001/read?tags=R0101_TIC_2101_PV,P0201_M_SPEED_ACTUAL')
   .then(data => console.log('Tag values:', data.values));
 ```
 
-## 💡 Use Cases
+ Use Cases
 
 - **Development & Testing** - Test PLC applications without hardware
 - **CI/CD Pipelines** - Automated testing of industrial software
@@ -211,12 +210,12 @@ fetch('http://localhost:8001/read?tags=R0101_TIC_2101_PV,P0201_M_SPEED_ACTUAL')
 - **Demo Environments** - Showcase industrial automation solutions
 - **Integration Testing** - Validate communication with PLC monitoring tools
 
-## 📋 Requirements
+ Requirements
 
 - **Python 3.6+**
 - **No additional dependencies** - uses only Python standard library
 
-## 🤝 Integration Partners
+ Integration Partners
 
 Designed to work seamlessly with:
 - **SCADA Systems** - Industrial HMI/SCADA applications
@@ -226,11 +225,11 @@ Designed to work seamlessly with:
 - **Custom Automation Tools** - via simple HTTP API
 - **Web Applications** - with CORS support
 
-## 📄 License
+ License
 
 MIT License - See [LICENSE](LICENSE) file for details.
 
-## 🐛 Contributing
+ Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -238,13 +237,6 @@ MIT License - See [LICENSE](LICENSE) file for details.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📞 Support
-
-- **Issues**: Create an issue on GitHub
-- **Questions**: Check the documentation for integration examples
-- **Documentation**: See code comments for implementation details
-
----
 
 ⚠️ **Note**: This is a simulation tool for development and testing purposes. Do not use in production environments with real industrial equipment.
 
