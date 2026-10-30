@@ -1,0 +1,34 @@
+# Systemd service file for Industrial PLC Simulator
+# Place in /etc/systemd/system/plc-simulator.service
+
+[Unit]
+Description=Industrial PLC Simulator
+Documentation=https://github.com/Digital-Energy/industrial-plc-simulator
+After=network.target
+
+[Service]
+Type=simple
+User=plc-service
+Group=plc-service
+WorkingDirectory=/opt/plc-simulator
+ExecStart=/usr/bin/python3 /opt/plc-simulator/industrial_plc_simulator.py
+Restart=always
+RestartSec=10
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/plc-simulator/logs
+
+# Resource limits
+LimitNOFILE=65536
+MemoryLimit=512M
+CPUQuota=50%
+
+# Environment
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target

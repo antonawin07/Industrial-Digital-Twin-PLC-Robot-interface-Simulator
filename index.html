@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industrial PLC Simulator - Digital Energy Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .company {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .api-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 30px 0;
+        }
+        
+        h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #1e3a8a;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        
+        .method.get {
+            background: #28a745;
+            color: white;
+        }
+        
+        .method.post {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .url {
+            font-family: 'Courier New', monospace;
+            color: #333;
+        }
+        
+        .description {
+            margin-top: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .tag-explorer {
+            margin-top: 30px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .tag-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .tag-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tag-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .tag-name {
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+        
+        .tag-value {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .tag-type {
+            color: #666;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #28a745;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        
+        footer a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1>Industrial PLC Simulator</h1>
+                    <div class="company">Digital Energy Services - Professional Automation Testing</div>
+                </div>
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span id="status">Connecting...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalTags">-</div>
+                <div class="stat-label">Total Tags</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="processAreas">-</div>
+                <div class="stat-label">Process Areas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="activeAlarms">-</div>
+                <div class="stat-label">Active Alarms</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="systemStatus">-</div>
+                <div class="stat-label">System Status</div>
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>API Endpoints</h2>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url" id="baseUrl">/tags</span>
+                <div class="description">List all available PLC tags with metadata</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/read?tags=TAG1,TAG2,TAG3</span>
+                <div class="description">Read current values for specified tags</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/areas</span>
+                <div class="description">Get tags organized by plant areas</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/alarms</span>
+                <div class="description">Get current alarm status and summary</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/write</span>
+                <div class="description">Write values to tags (JSON body)</div>
+            </div>
+        </div>
+
+        <div class="api-section tag-explorer">
+            <h2>Tag Explorer</h2>
+            <input type="text" class="search-box" id="searchBox" placeholder="Search tags... (e.g., R0101, PUMP, TEMP)">
+            <div class="tag-list" id="tagList">
+                <div class="loading">Loading tags...</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Digital Energy Services | <a href="https://www.digitalenergyservices.ca" target="_blank">www.digitalenergyservices.ca</a></p>
+            <p>Industrial Automation Testing Platform</p>
+        </div>
+    </footer>
+
+    <script>
+        // API base URL - update this when deployed
+        const API_BASE = window.location.origin;
+        
+        // Update base URL display
+        document.getElementById('baseUrl').textContent = API_BASE + '/tags';
+        
+        let allTags = [];
+        
+        // Fetch and display statistics
+        async function updateStats() {
+            try {
+                // Fetch tags
+                const tagsResponse = await fetch(`${API_BASE}/tags`);
+                const tagsData = await tagsResponse.json();
+                
+                // Fetch areas
+                const areasResponse = await fetch(`${API_BASE}/areas`);
+                const areasData = await areasResponse.json();
+                
+                // Fetch alarms
+                const alarmsResponse = await fetch(`${API_BASE}/alarms`);
+                const alarmsData = await alarmsResponse.json();
+                
+                // Update stats
+                document.getElementById('totalTags').textContent = tagsData.total_tags || '0';
+                document.getElementById('processAreas').textContent = areasData.total_areas || '0';
+                document.getElementById('activeAlarms').textContent = 
+                    alarmsData.active_alarms ? alarmsData.active_alarms.length : '0';
+                document.getElementById('systemStatus').textContent = 'OK';
+                
+                // Update status
+                document.getElementById('status').textContent = 'Live';
+                
+                // Store tags for search
+                allTags = tagsData.tags || [];
+                displayTags(allTags.slice(0, 50)); // Show first 50 tags
+                
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+                document.getElementById('status').textContent = 'Error';
+                document.getElementById('systemStatus').textContent = 'ERR';
+            }
+        }
+        
+        // Display tags in the explorer
+        function displayTags(tags) {
+            const tagList = document.getElementById('tagList');
+            
+            if (tags.length === 0) {
+                tagList.innerHTML = '<div class="loading">No tags found</div>';
+                return;
+            }
+            
+            tagList.innerHTML = tags.map(tag => `
+                <div class="tag-item">
+                    <div>
+                        <span class="tag-name">${tag.name}</span>
+                        <span class="tag-type">${tag.type}</span>
+                    </div>
+                    <span class="tag-value">${formatValue(tag.value)}</span>
+                </div>
+            `).join('');
+        }
+        
+        // Format tag values for display
+        function formatValue(value) {
+            if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
+            if (typeof value === 'number') return value.toFixed(2);
+            if (typeof value === 'string') return `"${value}"`;
+            if (Array.isArray(value)) return `[${value.length} items]`;
+            return String(value);
+        }
+        
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            const search = e.target.value.toLowerCase();
+            
+            if (search === '') {
+                displayTags(allTags.slice(0, 50));
+            } else {
+                const filtered = allTags.filter(tag => 
+                    tag.name.toLowerCase().includes(search)
+                );
+                displayTags(filtered);
+            }
+        });
+        
+        // Initial load
+        updateStats();
+        
+        // Refresh every 30 seconds
+        setInterval(updateStats, 30000);
+    </script>
+</body>
+</html>
